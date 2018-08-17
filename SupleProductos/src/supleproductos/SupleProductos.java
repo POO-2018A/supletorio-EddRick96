@@ -18,6 +18,7 @@ public class SupleProductos implements Serializable{
     private String categoria;
 
     public SupleProductos(){}
+    
     public SupleProductos(String nombre, double precio, String marca, String categoria) {
         this.nombre = nombre;
         this.precio = precio;
@@ -56,7 +57,12 @@ public class SupleProductos implements Serializable{
     public void setCategoria(String categoria) {
         this.categoria = categoria;
     }
+
+    /*@Override
+    public String toString() {
+       
+        return categoria;
+    }*/
     
-    
-    
+        
 }

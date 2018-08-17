@@ -19,7 +19,7 @@ public class Componente extends SupleProductos{
         super(nombre, precio, marca, categoria);
     }
 
-    public Componente(String tipo, int capacidad, int velocidad, String nombre, double precio, String marca, String categoria) {
+    public Componente(String nombre, double precio, String marca, String categoria, String tipo, int capacidad, int velocidad) {
         super(nombre, precio, marca, categoria);
         this.tipo = tipo;
         this.capacidad = capacidad;
@@ -49,5 +49,11 @@ public class Componente extends SupleProductos{
     public void setVelocidad(int velocidad) {
         this.velocidad = velocidad;
     }
+
+    @Override
+    public String toString() {
+        return "Componente\t" + "T: " + this.tipo + "\tCap.: " + this.capacidad + "\tVel.: " + this.velocidad;
+    }
+    
     
 }

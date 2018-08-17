@@ -21,7 +21,7 @@ public class Computador extends SupleProductos{
         
     }
 
-    public Computador(String tipo, int capacidad, int ram, String procesador, String nombre, double precio, String marca, String categoria) {
+    public Computador(String nombre, double precio, String marca, String categoria, String tipo, int capacidad, int ram, String procesador) {
         super(nombre, precio, marca, categoria);
         this.tipo = tipo;
         this.capacidad = capacidad;
@@ -61,5 +61,11 @@ public class Computador extends SupleProductos{
     public void setProcesador(String procesador) {
         this.procesador = procesador;
     }
+
+    @Override
+    public String toString() {
+        return "Computador\t " + "T:" + this.tipo + "\tCap.: " + this.capacidad + "Gb\tRAM:" + this.ram + "Gb\tProc: " + this.procesador;
+    }
+    
     
 }

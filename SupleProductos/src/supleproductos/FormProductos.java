@@ -6,6 +6,7 @@
 package supleproductos;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -23,19 +24,30 @@ public class FormProductos extends javax.swing.JFrame {
     public FormProductos() {
         initComponents();
         productos = control.extraerObjetos("productos.dat");
-        
+        llenarTbl();
+        vaciarPanel();
         
     }
-    public void llenarGrid(){
+    public void vaciarPanel(){
+        pnlAcc.setVisible(false);
+        pnlCompo.setVisible(false);
+        pnlComputador.setVisible(false);
+        btnAgregar.setEnabled(false);
+    }
+    public void llenarTbl(){
         if(productos.size() > 0){
             SupleProductos product = new SupleProductos();
             DefaultTableModel model = (DefaultTableModel) tblProductos.getModel();
             for(int i = 0; i < productos.size(); i ++){
                 product = (SupleProductos) productos.get(i);
-                Object estudiantesG [] = {product.getNombre(),product.getPrecio(),product.getMarca(),product.getCategoria()};
-                model.insertRow(i, estudiantesG);
+                Object productosG [] = {product.getNombre(),product.getPrecio(),product.getMarca(),product.getCategoria()};
+                model.insertRow(i, productosG);
             }
         }
+    }
+    
+    public Double formatDec(Double numer, Integer numerDec) {
+        return Math.round(numer * Math.pow(10, numerDec)) / Math.pow(10, numerDec);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -80,7 +92,7 @@ public class FormProductos extends javax.swing.JFrame {
         txtVelCompo = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProductos = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        btnAgregar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -89,6 +101,23 @@ public class FormProductos extends javax.swing.JFrame {
         jLabel2.setText("Precio:");
 
         jLabel3.setText("Categoria:");
+
+        txtNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNombreActionPerformed(evt);
+            }
+        });
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+        });
+
+        txtPrecio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPrecioKeyTyped(evt);
+            }
+        });
 
         cmbCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Computador", "Accesorio", "Componente" }));
         cmbCategoria.addActionListener(new java.awt.event.ActionListener() {
@@ -99,6 +128,8 @@ public class FormProductos extends javax.swing.JFrame {
 
         jLabel4.setText("Marca:");
 
+        pnlComputador.setBackground(new java.awt.Color(0, 102, 51));
+
         jLabel1.setText("COMPUTADOR");
 
         jLabel5.setText("Tipo:");
@@ -108,6 +139,18 @@ public class FormProductos extends javax.swing.JFrame {
         jLabel6.setText("Capacidad:");
 
         jLabel7.setText("RAM:");
+
+        txtCapComp.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCapCompKeyTyped(evt);
+            }
+        });
+
+        txtRamComp.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtRamCompKeyTyped(evt);
+            }
+        });
 
         jLabel8.setText("Procesador:");
 
@@ -139,7 +182,7 @@ public class FormProductos extends javax.swing.JFrame {
                         .addGroup(pnlComputadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtRamComp, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
                             .addComponent(txtCapComp))))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
         pnlComputadorLayout.setVerticalGroup(
             pnlComputadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -162,8 +205,10 @@ public class FormProductos extends javax.swing.JFrame {
                 .addGroup(pnlComputadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(txtProcComp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
+
+        pnlAcc.setBackground(new java.awt.Color(204, 0, 0));
 
         jLabel9.setText("ACCESORIO");
 
@@ -191,7 +236,7 @@ public class FormProductos extends javax.swing.JFrame {
                                 .addComponent(jLabel10)
                                 .addGap(18, 18, 18)
                                 .addComponent(txtTipoAcc, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         pnlAccLayout.setVerticalGroup(
             pnlAccLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -209,6 +254,8 @@ public class FormProductos extends javax.swing.JFrame {
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
+        pnlCompo.setBackground(new java.awt.Color(0, 153, 153));
+
         jLabel12.setText("COMPONENTE");
 
         jLabel13.setText("Tipo:");
@@ -216,6 +263,18 @@ public class FormProductos extends javax.swing.JFrame {
         jLabel14.setText("Capacidad:");
 
         jLabel15.setText("Velocidad:");
+
+        txtCapCompo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCapCompoKeyTyped(evt);
+            }
+        });
+
+        txtVelCompo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtVelCompoKeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlCompoLayout = new javax.swing.GroupLayout(pnlCompo);
         pnlCompo.setLayout(pnlCompoLayout);
@@ -279,10 +338,10 @@ public class FormProductos extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblProductos);
 
-        jButton1.setText("Agregar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnAgregarActionPerformed(evt);
             }
         });
 
@@ -292,45 +351,45 @@ public class FormProductos extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(44, 44, 44)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblNombre)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel3))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(txtPrecio)
-                                        .addComponent(txtNombre)
-                                        .addComponent(txtMarca, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE))))
-                            .addComponent(pnlComputador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(2, 2, 2)
-                                .addComponent(pnlAcc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(pnlCompo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jButton1)
-                                        .addGap(90, 90, 90)))))))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 624, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(44, 44, 44)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblNombre)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtPrecio)
+                                .addComponent(txtNombre)
+                                .addComponent(txtMarca, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addComponent(pnlComputador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(pnlCompo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                        .addComponent(pnlAcc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(80, 80, 80))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblNombre)
                             .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -345,20 +404,22 @@ public class FormProductos extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(23, 23, 23)
+                        .addComponent(pnlComputador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(pnlCompo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnlComputador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(pnlAcc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(pnlCompo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(52, 52, 52)
+                                .addComponent(pnlAcc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46))
+                .addGap(36, 36, 36))
         );
 
         pack();
@@ -366,7 +427,7 @@ public class FormProductos extends javax.swing.JFrame {
 
     private void cmbCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCategoriaActionPerformed
         String categoria = cmbCategoria.getSelectedItem().toString();
-        
+       
         if(categoria.equals("Computador")){
             pnlComputador.setVisible(true);
             pnlAcc.setVisible(false);
@@ -381,17 +442,119 @@ public class FormProductos extends javax.swing.JFrame {
             pnlAcc.setVisible(false);
             pnlCompo.setVisible(true);
         }
+         btnAgregar.setEnabled(true);
     }//GEN-LAST:event_cmbCategoriaActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         String nombre = txtNombre.getText();
         String precio = txtPrecio.getText();
         String marca = txtMarca.getText();
         String categoria = cmbCategoria.getSelectedItem().toString();
+                        
+        if(!nombre.equals("") && !precio.equals("") && !marca.equals("")){
+            SupleProductos product = new SupleProductos(nombre,formatDec(Double.valueOf(precio),2),marca, categoria);
+            categoriaS(nombre,formatDec(Double.valueOf(precio),2),marca, categoria);//Agrega las diferentes caracteristicas de los productos 
+            productos.add(product);
+            control.escribirObjeto("productos.dat", productos);
+            productos = control.extraerObjetos("productos.dat");
+            txtNombre.setText("");
+            txtPrecio.setText("");
+            txtMarca.setText("");
+            Object productosG [] = {product.getNombre(),product.getPrecio(),product.getMarca(),product.getCategoria()};
+            DefaultTableModel model = (DefaultTableModel) tblProductos.getModel();
+            model.addRow(productosG);
+            
+        }else{
+            JOptionPane.showMessageDialog(rootPane, "Por favor, llene todos los campos.", "¡Alerta!", 0);
+        }
         
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnAgregarActionPerformed
+//crea un control a través del tipeo del usuario bloqueando las letras o numero del teclado
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+        char caracter = evt.getKeyChar();
+        if (((caracter < 'A') || (caracter > 'Z')) && ((caracter < 'a') || (caracter > 'z')) && (caracter != 32)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNombreKeyTyped
 
+    private void txtPrecioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioKeyTyped
+        char caracter = evt.getKeyChar();
+        if (((caracter < '0') || (caracter > '9')) && (caracter != ',')) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtPrecioKeyTyped
+
+    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreActionPerformed
+
+    private void txtCapCompKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCapCompKeyTyped
+        char caracter = evt.getKeyChar();
+        if (((caracter < '0') || (caracter > '9'))) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCapCompKeyTyped
+
+    private void txtRamCompKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRamCompKeyTyped
+        char caracter = evt.getKeyChar();
+        if (((caracter < '0') || (caracter > '9'))) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtRamCompKeyTyped
+
+    private void txtCapCompoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCapCompoKeyTyped
+        char caracter = evt.getKeyChar();
+        if (((caracter < '0') || (caracter > '9'))) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCapCompoKeyTyped
+
+    private void txtVelCompoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtVelCompoKeyTyped
+        char caracter = evt.getKeyChar();
+        if (((caracter < '0') || (caracter > '9'))) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtVelCompoKeyTyped
+
+    public void categoriaS(String nombre, double precio, String marca, String categoria){
+        //String cat;
+        SupleProductos p1;
+        if(categoria.equals("Computador")){
+            String tipo = cmbTipoComp.getSelectedItem().toString();
+            String capacidad = txtCapComp.getText();//int
+            String ram = txtRamComp.getText();//int
+            String procesador = txtProcComp.getText();
+            
+            p1 = new Computador(nombre,precio, marca, categoria, tipo, Integer.valueOf(capacidad),Integer.valueOf(ram), procesador);
+            
+        }else if (categoria.equals("Accesorio")){
+            
+            String tipo =txtTipoAcc.getText();
+            String color = txtColorAcc.getText();
+            
+            p1 = new Accesorio(nombre, precio, marca, categoria, tipo, color);
+            
+        }else if(categoria.equals("Componente")){
+            String tipo = txtTipoCompo.getText();
+            String capacidad = txtCapCompo.getText();//int
+            String velocidad = txtVelCompo.getText();//int
+            
+            p1 = new Componente(nombre, precio, marca, categoria, tipo, Integer.valueOf(capacidad), Integer.valueOf(velocidad));
+            //lblCaracteristicas.setText(p1.toString());
+        }
+        
+        txtCapComp.setText("");
+        txtRamComp.setText("");
+        txtProcComp.setText("");
+        
+        txtTipoAcc.setText("");
+        txtColorAcc.setText("");
+        
+        txtTipoCompo.setText("");
+        txtCapCompo.setText("");
+        txtVelCompo.setText("");
+        
+    } 
     /**
      * @param args the command line arguments
      */
@@ -428,9 +591,9 @@ public class FormProductos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAgregar;
     private javax.swing.JComboBox<String> cmbCategoria;
     private javax.swing.JComboBox<String> cmbTipoComp;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

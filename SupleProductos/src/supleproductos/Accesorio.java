@@ -18,7 +18,7 @@ public class Accesorio extends SupleProductos{
         super(nombre, precio, marca, categoria);
     }
 
-    public Accesorio(String tipo, String color, String nombre, double precio, String marca, String categoria) {
+    public Accesorio(String nombre, double precio, String marca, String categoria, String tipo, String color) {
         super(nombre, precio, marca, categoria);
         this.tipo = tipo;
         this.color = color;
@@ -38,6 +38,11 @@ public class Accesorio extends SupleProductos{
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    @Override
+    public String toString() {
+        return "Accesorio" + "\tT: " + this.tipo + "\tColor: " + this.color;
     }
     
     
