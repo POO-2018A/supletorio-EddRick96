@@ -7,7 +7,9 @@ package supleproductos;
 
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -24,6 +26,7 @@ public class FormProductos extends javax.swing.JFrame {
     public FormProductos() {
         initComponents();
         productos = control.extraerObjetos("productos.dat");
+        fullCombo();
         llenarTbl();
         vaciarPanel();
         
@@ -43,6 +46,17 @@ public class FormProductos extends javax.swing.JFrame {
                 Object productosG [] = {product.getNombre(),product.getPrecio(),product.getMarca(),product.getCategoria()};
                 model.insertRow(i, productosG);
             }
+        }
+    }
+    public void fullCombo(){
+        if(productos.size() > 0){
+            cmbProductos.setEnabled(true);
+            SupleProductos.cat=false;
+            productos = control.extraerObjetos("productos.dat");
+            
+            cmbProductos.setModel(new javax.swing.DefaultComboBoxModel(productos.toArray()));
+        }else{
+            cmbProductos.setEnabled(false);
         }
     }
     
@@ -93,6 +107,8 @@ public class FormProductos extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProductos = new javax.swing.JTable();
         btnAgregar = new javax.swing.JButton();
+        cmbProductos = new javax.swing.JComboBox<>();
+        lblCaract = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -342,14 +358,23 @@ public class FormProductos extends javax.swing.JFrame {
             }
         });
 
+        cmbProductos.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbProductosItemStateChanged(evt);
+            }
+        });
+        cmbProductos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbProductosActionPerformed(evt);
+            }
+        });
+
+        lblCaract.setText("...");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(44, 44, 44)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 624, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -378,6 +403,15 @@ public class FormProductos extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                         .addComponent(pnlAcc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(80, 80, 80))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 624, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(cmbProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblCaract, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -402,7 +436,11 @@ public class FormProductos extends javax.swing.JFrame {
                             .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(23, 23, 23)
                         .addComponent(pnlComputador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cmbProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblCaract))
+                        .addGap(18, 18, 18))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(pnlCompo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -412,7 +450,7 @@ public class FormProductos extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36))
         );
@@ -449,16 +487,19 @@ public class FormProductos extends javax.swing.JFrame {
         if(!nombre.equals("") && !precio.equals("") && !marca.equals("")){
             SupleProductos product = new SupleProductos(nombre,formatDec(Double.valueOf(precio),2),marca, categoria);
             categoriaS(nombre,formatDec(Double.valueOf(precio),2),marca, categoria);//Agrega las diferentes caracteristicas de los productos 
-            productos.add(product);
+            
+            /*productos.add(product);
             control.escribirObjeto("productos.dat", productos);
-            productos = control.extraerObjetos("productos.dat");
+            productos = control.extraerObjetos("productos.dat");*/
+            
             txtNombre.setText("");
             txtPrecio.setText("");
             txtMarca.setText("");
+            fullCombo();
             Object productosG [] = {product.getNombre(),product.getPrecio(),product.getMarca(),product.getCategoria()};
             DefaultTableModel model = (DefaultTableModel) tblProductos.getModel();
             model.addRow(productosG);
-            
+            vaciarPanel();
         }else{
             JOptionPane.showMessageDialog(rootPane, "Por favor, llene todos los campos.", "¡Alerta!", 0);
         }
@@ -511,6 +552,43 @@ public class FormProductos extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtVelCompoKeyTyped
 
+    private void cmbProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbProductosActionPerformed
+        int cate = cmbProductos.getSelectedIndex();
+        SupleProductos p1 = (SupleProductos) productos.get(cate);
+        //categoriaS(p1.getNombre(), p1.getPrecio(), p1.getMarca(), p1.getCategoria);
+        if(p1.getCategoria().equals("Computador")){
+                        
+            p1 = (Computador) productos.get(cate);
+            SupleProductos.cat = true;
+            lblCaract.setText(p1.toString());
+        }else if (p1.getCategoria().equals("Accesorio")){
+                      
+            p1 = (Accesorio) productos.get(cate);
+            SupleProductos.cat = true;
+            lblCaract.setText(p1.toString());
+        }else if(p1.getCategoria().equals("Componente")){
+                        
+            p1 = (Componente) productos.get(cate);
+            SupleProductos.cat = true;
+            lblCaract.setText(p1.toString());
+        }
+        SupleProductos.cat = false;
+        //lblCaract.setText("");
+    }//GEN-LAST:event_cmbProductosActionPerformed
+
+    private void cmbProductosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbProductosItemStateChanged
+        /*String filtro = cmbProductos.getSelectedItem().toString();
+        
+        TableRowSorter<DefaultTableModel> tblFiltro = new TableRowSorter<DefaultTableModel>();
+        tblProductos.setRowSorter(tblFiltro);
+        
+        if(!filtro.equals("Todos")){
+            tblFiltro.setRowFilter(RowFilter.regexFilter(filtro,2));
+        }else{
+            tblProductos.setRowSorter(tblFiltro);
+        }*/
+    }//GEN-LAST:event_cmbProductosItemStateChanged
+
     public void categoriaS(String nombre, double precio, String marca, String categoria){
         //String cat;
         SupleProductos p1;
@@ -521,6 +599,9 @@ public class FormProductos extends javax.swing.JFrame {
             String procesador = txtProcComp.getText();
             
             p1 = new Computador(nombre,precio, marca, categoria, tipo, Integer.valueOf(capacidad),Integer.valueOf(ram), procesador);
+            productos.add(p1);
+            control.escribirObjeto("productos.dat", productos);
+            productos = control.extraerObjetos("productos.dat");
             
         }else if (categoria.equals("Accesorio")){
             
@@ -528,14 +609,19 @@ public class FormProductos extends javax.swing.JFrame {
             String color = txtColorAcc.getText();
             
             p1 = new Accesorio(nombre, precio, marca, categoria, tipo, color);
-            
+            productos.add(p1);
+            control.escribirObjeto("productos.dat", productos);
+            productos = control.extraerObjetos("productos.dat");
         }else if(categoria.equals("Componente")){
             String tipo = txtTipoCompo.getText();
             String capacidad = txtCapCompo.getText();//int
             String velocidad = txtVelCompo.getText();//int
             
             p1 = new Componente(nombre, precio, marca, categoria, tipo, Integer.valueOf(capacidad), Integer.valueOf(velocidad));
-            //lblCaracteristicas.setText(p1.toString());
+            productos.add(p1);
+            control.escribirObjeto("productos.dat", productos);
+            productos = control.extraerObjetos("productos.dat");
+            
         }
         
         txtCapComp.setText("");
@@ -588,6 +674,7 @@ public class FormProductos extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JComboBox<String> cmbCategoria;
+    private javax.swing.JComboBox<String> cmbProductos;
     private javax.swing.JComboBox<String> cmbTipoComp;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -605,6 +692,7 @@ public class FormProductos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblCaract;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JPanel pnlAcc;
     private javax.swing.JPanel pnlCompo;

@@ -13,7 +13,10 @@ public class Accesorio extends SupleProductos{
     
     private String tipo;
     private String color;
-    
+
+    public Accesorio() {
+    }
+        
     public Accesorio(String nombre, double precio, String marca, String categoria) {
         super(nombre, precio, marca, categoria);
     }
@@ -42,7 +45,10 @@ public class Accesorio extends SupleProductos{
 
     @Override
     public String toString() {
-        return "Accesorio" + "\tT: " + this.tipo + "\tColor: " + this.color;
+        if(cat){
+            return "Accesorio     " + "    T: " + this.tipo + "      Color: " + this.color;
+        }
+        return nombre+"-"+marca;
     }
     
     

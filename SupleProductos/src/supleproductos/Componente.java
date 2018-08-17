@@ -14,7 +14,10 @@ public class Componente extends SupleProductos{
     private String tipo;
     private int capacidad;
     private int velocidad;
-    
+
+    public Componente() {
+    }
+        
     public Componente(String nombre, double precio, String marca, String categoria) {
         super(nombre, precio, marca, categoria);
     }
@@ -52,7 +55,11 @@ public class Componente extends SupleProductos{
 
     @Override
     public String toString() {
-        return "Componente\t" + "T: " + this.tipo + "\tCap.: " + this.capacidad + "\tVel.: " + this.velocidad;
+        if(cat){
+            return "Componente   " + "   T: " + this.tipo + "   Cap.:   " + this.capacidad + "    Vel.: " + this.velocidad;
+        
+        }
+        return nombre+"-"+marca;
     }
     
     

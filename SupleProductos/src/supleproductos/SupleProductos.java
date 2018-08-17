@@ -12,11 +12,12 @@ import java.io.Serializable;
  * @author ESFOT
  */
 public class SupleProductos implements Serializable{
-    private String nombre;
+    protected String nombre;
     private double precio;
-    private String marca;
+    protected String marca;
     private String categoria;
-
+    public static boolean cat;
+    
     public SupleProductos(){}
     
     public SupleProductos(String nombre, double precio, String marca, String categoria) {
@@ -60,8 +61,10 @@ public class SupleProductos implements Serializable{
 
     /*@Override
     public String toString() {
-       
-        return categoria;
+       if(!cat){
+           return nombre+" - "+categoria;
+       }
+        return "";
     }*/
     
         
