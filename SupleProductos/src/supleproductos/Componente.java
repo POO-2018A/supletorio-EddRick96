@@ -56,7 +56,7 @@ public class Componente extends SupleProductos{
     @Override
     public String toString() {
         if(cat){
-            return "Componente   " + "   T: " + this.tipo + "   Cap.:   " + this.capacidad + "    Vel.: " + this.velocidad;
+            return "Componente   " + "   Tipo: " + this.tipo + "   Capacidad:   " + this.capacidad + "    Velocidad: " + this.velocidad;
         
         }
         return nombre+"-"+marca;

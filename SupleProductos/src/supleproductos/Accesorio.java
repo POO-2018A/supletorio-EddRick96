@@ -46,7 +46,7 @@ public class Accesorio extends SupleProductos{
     @Override
     public String toString() {
         if(cat){
-            return "Accesorio     " + "    T: " + this.tipo + "      Color: " + this.color;
+            return "Accesorio     " + "    Tipo: " + this.tipo + "      Color: " + this.color;
         }
         return nombre+"-"+marca;
     }

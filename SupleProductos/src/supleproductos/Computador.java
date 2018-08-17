@@ -68,7 +68,7 @@ public class Computador extends SupleProductos{
     @Override
     public String toString() {
         if (cat){
-            return "Computador     " + "   T:" + this.tipo + "    Cap.: " + this.capacidad + "Gb     RAM:" + this.ram + "Gb     Proc: " + this.procesador;
+            return "Computador     " + "   Tipo: " + this.tipo + "    Capacidad: " + this.capacidad + "Gb     RAM: " + this.ram + "Gb     Procesador: " + this.procesador;
         }
         return nombre+"-"+marca;
     }
